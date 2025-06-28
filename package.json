@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "expo": "^53.0.4",
+    "react": "19.0.0",
+    "react-dom": "19.0.0",
+    "react-native": "0.79.1",
+    "react-native-web": "^0.20.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.19.3",
+    "@types/react": "~19.0.10",
+    "@types/react-native": "~0.70.6",
+    "typescript": "~5.8.3"
+  },
+  "name": "time_remaining",
+  "version": "1.0.0",
+  "private": true
+}
