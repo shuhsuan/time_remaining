@@ -1,4 +1,15 @@
 {
-  "name": "time_remaining",
-  "slug": "time_remaining"
+  "expo": {
+    "name": "time_remaining",
+    "slug": "time_remaining",
+    "android": {
+      "package": "com.sheb.time_remaining"
+    },
+    "icon": "./assets/pocketwatch_blue.png",
+    "splash": {
+      "image": "./assets/pocketwatch_blue.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#060D59"
+    }
+  }
 }
