@@ -10,6 +10,11 @@
       "image": "./assets/pocketwatch_blue.png",
       "resizeMode": "contain",
       "backgroundColor": "#060D59"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "8fba357c-4ec8-4cda-8d27-cf29fec973cc"
+      }
     }
   }
 }
