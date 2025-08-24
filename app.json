@@ -1,13 +1,13 @@
 {
   "expo": {
-    "name": "time_remaining",
+    "name": "The Hourglass",
     "slug": "time_remaining",
     "android": {
       "package": "com.sheb.time_remaining"
     },
-    "icon": "./assets/pocketwatch_blue.png",
+    "icon": "./assets/pixelated_hour.png",
     "splash": {
-      "image": "./assets/pocketwatch_blue.png",
+      "image": "./assets/pixelated_hour.png",
       "resizeMode": "contain",
       "backgroundColor": "#060D59"
     },

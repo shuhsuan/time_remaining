@@ -7,42 +7,54 @@ interface ScrollPickerProps<T> {
   visibleItems?: number;
   renderItemText?: (item: T) => string;
   onValueChange?: (value: T) => void;
+  initialValue?: T;
 }
-
-const { height: screenHeight } = Dimensions.get('window'); //use later maybe
 
 export function ScrollPicker<T>({
   data,
-  itemHeight = 40,
-  visibleItems = 5,
+  itemHeight = 35,
+  visibleItems = data.length <= 3 ? 3 : 5,
   renderItemText,
   onValueChange,
+  initialValue
 }: ScrollPickerProps<T>) {
   const listRef = useRef<FlatList>(null);
-  const [selectedIndex, setSelectedIndex] = useState(Math.floor(data.length / 2));
+
+  const getInitialIndex = () => {
+    if (initialValue) {
+      const initialIndex = data.indexOf(initialValue);
+      return initialIndex >= 0 ? initialIndex : 0;
+    }
+    return 0;
+  };
+
+  const [selectedIndex, setSelectedIndex] = useState(getInitialIndex());
+
 
   useEffect(() => {
-  if (listRef.current) {
-    listRef.current.scrollToOffset({
-      offset: selectedIndex * itemHeight,
-      animated: false, 
-    });
-    onValueChange?.(data[selectedIndex]);
-  }
-}, []);
+    if (listRef.current) {
+      listRef.current.scrollToOffset({
+        offset: selectedIndex * itemHeight,
+        animated: false,
+      });
+      onValueChange?.(data[selectedIndex]);
+    }
+  }, []);
 
   const spacerHeight = (itemHeight * (visibleItems - 1)) / 2;
+  const isSmallList = data.length <= visibleItems
 
   const handleScrollEnd = (e: any) => {
     const offsetY = e.nativeEvent.contentOffset.y;
     const index = Math.round(offsetY / itemHeight);
 
-    setSelectedIndex(index);
-    onValueChange?.(data[index]);
-
+    if (index !== selectedIndex) {
+      setSelectedIndex(index);
+      onValueChange?.(data[index]);
+    }
     listRef.current?.scrollToOffset({
       offset: index * itemHeight,
-      animated: true,
+      animated: false,
     });
   };
 
@@ -52,7 +64,7 @@ export function ScrollPicker<T>({
     return (
       <View style={[styles.itemContainer, { height: itemHeight }]}>
         <Text style={[styles.itemText, isSelected && styles.selectedText]}>
-          {renderItemText? renderItemText(item) : String(item)}
+          {renderItemText ? renderItemText(item) : String(item)}
         </Text>
       </View>
     );
@@ -65,8 +77,11 @@ export function ScrollPicker<T>({
         data={data}
         keyExtractor={(_, index) => index.toString()}
         showsVerticalScrollIndicator={false}
-        snapToInterval={itemHeight}
-        decelerationRate="fast"
+        // snapToInterval={itemHeight}
+        // decelerationRate="fast"
+        snapToInterval={isSmallList ? undefined : itemHeight}
+        decelerationRate={isSmallList ? "normal" : "fast"}
+        onScrollEndDrag={handleScrollEnd}
         onMomentumScrollEnd={handleScrollEnd}
         renderItem={renderItem}
         getItemLayout={(_, index) => ({
@@ -77,6 +92,7 @@ export function ScrollPicker<T>({
         contentContainerStyle={{
           paddingVertical: spacerHeight,
         }}
+
       />
 
       <View
@@ -97,9 +113,9 @@ const styles = StyleSheet.create({
   itemContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#c7a84c',
+    // backgroundColor: '#c7a84c',
     paddingVertical: 5,
-    paddingHorizontal: 20
+    paddingHorizontal: 20,
   },
   itemText: {
     color: '#888',
@@ -116,6 +132,8 @@ const styles = StyleSheet.create({
     right: 0,
     borderTopWidth: 1,
     borderBottomWidth: 1,
-    borderColor: '#aaa',
+    // borderColor: '#aaa',
+    borderRadius: 10
+
   },
 });
